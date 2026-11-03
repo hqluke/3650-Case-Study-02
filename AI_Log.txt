@@ -1,0 +1,236 @@
+AI LOG - CS 3650 Case Study 02: Interactive Prototype Specification
+Luke Peterson, Weber State University
+November 2026
+
+Tool: Claude through Claude Code in my terminal for the first build. The
+second-pass edits were applied by an AI coding agent in OpenCode while I chose
+the direction and reviewed the result.
+
+The 3650-hci skill was loaded for the session. It has my
+Phase 1 findings (H-01 through H-14 and the WCAG failures A-01 through A-12
+from the ForeUp audit), and the reference to my deployed golf site (utahgolftimes.com). The WCAG
+2.1 AA requirements and the touch target sizes come from the Case Study 02
+assignment text, which I pasted into the session.
+
+
+1. WHAT I DECIDED
+
+- The flow: one combined booking flow for Davis Park and Valley View, the two
+  Davis County public courses from my Phase 1 audit. The findings drove the
+  design, and the mapping from finding to design is in README section 1. The
+  short version: one Holes control instead of filter buttons that silently
+  decide what loads (H-01), an empty state that says which of "sold out," "not
+  open yet," or "wrong class" it is and offers searches with times (H-02), both
+  courses in one list with a count and earliest time each (H-03), closed days
+  shown as disabled with the date they open (H-04), cancellation deadlines on
+  the pay step (H-05), and the day and time on the Pay button (H-06, A-01,
+  A-05).
+- Hosting: GitHub Pages rather than Figma.
+- Build order: I asked for the whole thing to be built end to end first and
+  committed after.
+- Iterations: two rounds on the design. I asked that only the final build and
+  spec files be included in this repository.
+- I reviewed the local build and the spec files myself and directed the fixes
+  in section 4.
+
+
+2. PROMPTS
+
+These are the messages I typed that mattered, in order. I left the typos in
+because that is what I sent. Where I pasted a block of assignment text, I say
+so instead of reproducing the whole thing.
+
+Prompt 1 - assignment, the existing golf site, and the plan
+
+  I pasted the Case Study 02 assignment from Canvas I also pointed Claude at my
+  local golf repo that already implements the page, and told it to take inspiration 
+  from that while keeping the prototype within WCAG guidelines.
+
+  "I think we can just host it on github pages."
+
+  "What will it look lke to get this done ?"
+
+  Claude came back with one combined Davis Park and Valley View booking flow,
+  a new repo, and plain HTML, CSS, and JavaScript. I went with that.
+
+Prompt 2 - build it first
+
+  "lets get the full thing fleshed out, then we can start worrying about
+  commits. I'd rather we create the thing end to end and then commit it."
+
+  I wanted the booking flow itself to be the thing I turned in, not a separate
+  mock sitting next to it. So we built it working first and wrote the spec
+  around it.
+
+Prompt 3 - my Phase 1 notes
+
+  I pointed Claude at my Phase 1 notes for the ForeUp audit. They are not part
+  of this repository.
+
+  "Yes for 2, iterations. Where to see all of this ?"
+
+  Meaning: do two rounds, and show me where the work actually lives.
+
+Prompt 4 - README and scope
+
+  "the readme reads like ai /humanizer I think it's too long ?"
+
+  I also asked what the generative AI policy for this assignment wanted in this
+  log.
+
+  What I wanted: a shorter README that did not sound like a machine and a real AI log for the GenAI part of the grade.
+
+Second pass - after the first build
+
+  This was not one typed prompt. I picked from options Claude gave me: warm
+  neutrals with the forest green kept, copy edits across the page, states page,
+  and README, and fixing the details that did not line up. The actual changes
+  are listed in section 6.
+
+
+3. CODE GENERATED
+
+The initial build was written by Claude. I pointed it at my local golf repo
+for reference, and the build follows the WCAG 2.1 AA requirements from the
+assignment. The files below were created or changed in that build; the later
+edits are listed in section 6.
+
+  - docs/index.html: the three-step booking page (Find a time, Review and pay,
+    Confirmed), with landmarks, fieldsets, labels, and live regions.
+  - docs/app.js: the fake tee sheet, booking window and sunset rules, search,
+    empty states, validation, payment states, focus management, and history
+    support.
+  - docs/styles.css: colors, layout, all component states, target sizing, and
+    the focus ring.
+  - docs/states.html: the component states page, with every component frozen
+    in each state.
+  - prototype_spec/scripts/contrast.mjs: checks every color pair from
+    styles.css.
+  - prototype_spec/scripts/measure-targets.js: measures every target's size
+    and spacing.
+  - prototype_spec/scripts/axe-check.js: runs axe-core on the page.
+  - prototype_spec/scripts/audit.mjs: runs the two checks above on every step
+    and writes the result files.
+  - prototype_spec/scripts/capture.sh: takes every screenshot in
+    prototype_spec/.
+
+Claude also drafted README.md and the files in prototype_spec/, including the
+interaction flow diagram, the target size audit, the component state assets,
+and the contrast results. The README was rewritten a second
+time to be shorter and to sound like me (prompt 4).
+
+
+4. TESTING AND FIXES
+
+Claude ran keyboard-only passes, axe-core, Lighthouse, the accessibility tree
+in Chrome, and both audit scripts, and reviewed screenshots at 390 px and
+1280 px. The problems it found and fixed:
+
+- Error summary links were 32 px tall with no gap. Fixed: 44 px minimum height
+  and 8 px between links.
+- Arrow keys in the date picker dropped focus to the page body after one press,
+  because every change rebuilt the date chips. Fixed: the chips are updated in
+  place.
+- The checkmark on selected chips and the "!" on error messages were read as
+  part of the control's accessible name. Fixed: CSS content alt text set to
+  empty.
+- The Pay button never showed "Processing payment..." while loading, because
+  the total was recalculated after the label was set. Fixed the order.
+- The results summary showed the previous day while the next day was loading.
+  Fixed: it says "Loading tee times for <day>..." while the skeleton is up.
+- The middle cancellation deadline was printed backwards. Fixed the order.
+- If two filters blocked everything at once, the empty state had no
+  suggestion. Added one that loosens time of day and holes together and keeps
+  the group size.
+- On a phone the step list and date chips wrapped badly and the Filters arrow
+  dropped to the corner. Fixed the layout.
+
+After the fixes: 0 axe violations across 7 page states, Lighthouse
+accessibility 100, every target at least 44 x 44 px with 8 px spacing, every
+color pair passes WCAG 2.1 AA. The raw results are in
+prototype_spec/contrast-results.md, prototype_spec/target-size-audit.md, and
+prototype_spec/axe-results.md.
+
+These fixes were made by Claude under my direction. I reviewed them by
+checking the page and the audit reports, and I approved them.
+
+
+5. MY MANUAL MODIFICATIONS
+
+What I actually decided and changed:
+
+- Chose the subject of the prototype (the combined Davis Park and Valley View
+  booking flow) from my Phase 1 findings.
+- Pointed Claude at my local golf repo for inspiration and set the WCAG
+  guidelines as the constraint.
+- Chose GitHub Pages over Figma and over any other host.
+- Sent the README back for a rewrite so it would read like me and not like a
+  generated doc.
+- Directed the fixes in section 4 and confirmed them in the local build.
+- Chose the second-pass direction in section 6.
+
+Manual code edits typed by me at any point: none. The initial code was written
+by Claude and I directed and reviewed it. Claiming otherwise would not be
+accurate.
+
+More in section 6.
+
+
+6. WORK DONE AFTER THE FIRST BUILD
+
+November 2, 2026 local. The audit files are dated November 3, 2026 because the
+audit script uses UTC.
+
+After the first build I had an AI coding agent make a second pass with me in
+OpenCode. The edits below were applied by that agent while I chose the
+direction and reviewed the output; they were not typed by hand into a text
+editor. I checked the result in the browser at 390 px and 1280 px, in the
+console (no errors), and in the checks below.
+
+- I asked for the page's neutrals to be warmed while keeping the forest green,
+  the navy focus ring, and the alert colors. docs/styles.css now uses a warm
+  near-white page (#fffdf8), warm panel and disabled colors, #22211e text,
+  #55524b hints, #6e6a5f control borders, #54514a for the 9-or-18 badge, and
+  matching tints. The contrast script was re-run and all 16 pairs pass WCAG
+  2.1 AA (prototype_spec/contrast-results.md). The README contrast table and
+  its lowest ratios were updated to match.
+- I chose the booking-page copy changes to read less like a generated document: the
+  booking window note on the Date fieldset, the Phone label, the
+  practice-checkout notice, the results and empty state wording, and the
+  no-course message in both the page and docs/states.html. The component
+  states page now says what the frozen samples do instead of using the word
+  "inert."
+- I had a spec inconsistency closed: the README's worked example used $56.00 while
+  docs/states.html used $36.00. The states page now uses the same example as
+  the README and Figure 2.
+- I had a stale comment fixed in docs/styles.css: the focus ring was called 10.4:1
+  on white, and the measured value is 10.04:1 on white.
+- I had a dead README reference fixed. It pointed to a non-existent "Section 7.1";
+  the focus-loss bug is discussed in Section 6.1.
+- I had the screenshots regenerated with prototype_spec/scripts/capture.sh after the
+  CSS and copy changes so the figures match the current build.
+- I had node prototype_spec/scripts/audit.mjs re-run after the edits. The target
+  audit still passes every target at both phone and desktop widths, and
+  axe-core reports 0 violations on all seven page states
+  (prototype_spec/target-size-audit.md, prototype_spec/axe-results.md; both
+  are stamped November 3, 2026 because the script uses UTC).
+- I had a real Lighthouse report added instead of leaving an unverified claim in the
+  README: accessibility 100, best practices 100, SEO 100. The report also
+  includes a failed audit (cumulative layout shift 0.288), and the README says
+  so instead of presenting only the clean scores
+  (prototype_spec/lighthouse/report.html).
+
+The tooling, code, and screenshots were produced by Claude and the OpenCode
+agent under my direction and review. I am listing the decisions and edits I
+made or directed, not claiming manual typing that did not occur.
+
+
+7. GENERATIVE AI POLICY
+
+GenAI was used to draft the prototype code, the spec assets, and the README
+(Claude for the first build, an OpenCode agent for the second pass). The
+3650-hci skill supplied my writing rules, Phase 1 findings, and the reference
+to my deployed golf site. The
+prompts, the generated code, and the manual modifications are listed above. I
+checked every fact in the deliverable myself (the Phase 1 mapping, the audit
+results, the contrast ratios) and I take responsibility for what is submitted.

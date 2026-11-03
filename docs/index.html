@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Prototype that books a tee time at Davis Park or Valley View, Davis County's public golf courses, from one page.">
+  <title>Find a Tee Time - Davis County Golf (Prototype)</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <p class="site-title"><a href="./">Davis County Golf</a></p>
+    <p class="proto-badge">Prototype with sample tee times</p>
+  </header>
+
+  <nav class="steps" aria-label="Booking steps">
+    <ol>
+      <li data-step="search" aria-current="step"><span class="step-num">1</span> <span class="step-label">Find a time</span></li>
+      <li data-step="review"><span class="step-num">2</span> <span class="step-label">Review and pay</span></li>
+      <li data-step="done"><span class="step-num">3</span> <span class="step-label">Confirmed</span></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+    <!-- Step 1 -->
+    <section id="step-search" aria-labelledby="search-heading">
+      <h1 id="search-heading" tabindex="-1">Find a tee time</h1>
+      <p class="lede">Davis Park and Valley View on one page.</p>
+
+      <form id="search-form" class="search" novalidate>
+        <fieldset class="dates" aria-describedby="window-note">
+          <legend>Date</legend>
+          <div id="date-options" class="chip-grid"></div>
+          <p id="window-note" class="hint">If you're 2 or more and playing 18 holes, you can book 4 days ahead, counting today. Everyone else gets 3. Each new day opens at 9 PM.</p>
+        </fieldset>
+
+        <button type="button" id="filters-toggle" class="filters-toggle" aria-expanded="false" aria-controls="more-filters">
+          <span>Filters</span> <span id="filters-summary" class="filters-summary"></span>
+        </button>
+
+        <div id="more-filters" class="more-filters">
+          <fieldset aria-describedby="courses-error">
+            <legend>Courses</legend>
+            <div class="chip-row">
+              <label class="check"><input type="checkbox" name="courses" value="dp" checked><span>Davis Park <small>Fruit Heights</small></span></label>
+              <label class="check"><input type="checkbox" name="courses" value="vv" checked><span>Valley View <small>Layton</small></span></label>
+            </div>
+            <p id="courses-error" class="field-error" aria-live="polite"></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>Holes</legend>
+            <div class="chip-row">
+              <label class="chip"><input type="radio" name="holes" value="any"><span>9 or 18</span></label>
+              <label class="chip"><input type="radio" name="holes" value="9"><span>9 holes</span></label>
+              <label class="chip"><input type="radio" name="holes" value="18"><span>18 holes</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Players</legend>
+            <div class="chip-row">
+              <label class="chip"><input type="radio" name="players" value="1"><span>1</span></label>
+              <label class="chip"><input type="radio" name="players" value="2"><span>2</span></label>
+              <label class="chip"><input type="radio" name="players" value="3"><span>3</span></label>
+              <label class="chip"><input type="radio" name="players" value="4"><span>4</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Time of day</legend>
+            <div class="chip-row">
+              <label class="chip"><input type="radio" name="tod" value="any"><span>Any time</span></label>
+              <label class="chip"><input type="radio" name="tod" value="morning"><span>Morning</span></label>
+              <label class="chip"><input type="radio" name="tod" value="midday"><span>Midday</span></label>
+              <label class="chip"><input type="radio" name="tod" value="afternoon"><span>Afternoon</span></label>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+
+      <section class="results" aria-labelledby="results-heading">
+        <h2 id="results-heading">Tee times</h2>
+        <p id="results-summary" class="results-summary"></p>
+        <p id="results-by-course"></p>
+        <p id="sunset-note" class="hint"></p>
+        <p id="results-status" class="visually-hidden" aria-live="polite"></p>
+        <ul id="results-list" class="tee-list" aria-labelledby="results-heading"></ul>
+        <div id="empty-state" class="empty-state" hidden>
+          <h3 id="empty-title"></h3>
+          <p id="empty-body"></p>
+          <div id="empty-actions" class="chip-row"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Step 2 -->
+    <section id="step-review" aria-labelledby="review-heading" hidden>
+      <h1 id="review-heading" tabindex="-1">Review and pay</h1>
+
+      <div id="already-booked" class="notice notice-success" hidden></div>
+
+      <dl id="review-details" class="details"></dl>
+
+      <form id="booking-form" class="booking" novalidate>
+        <div id="error-summary" class="error-summary" tabindex="-1" hidden>
+          <h2>Fix these before you pay</h2>
+          <ul></ul>
+        </div>
+
+        <fieldset aria-describedby="holes-note">
+          <legend>Holes</legend>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" name="holes" value="9"><span>9 holes</span></label>
+            <label class="chip"><input type="radio" name="holes" value="18"><span>18 holes</span></label>
+          </div>
+          <p id="holes-note" class="hint"></p>
+          <p id="holes-error" class="field-error" aria-live="polite"></p>
+        </fieldset>
+
+        <fieldset aria-describedby="players-note">
+          <legend>Players</legend>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" name="players" value="1"><span>1</span></label>
+            <label class="chip"><input type="radio" name="players" value="2"><span>2</span></label>
+            <label class="chip"><input type="radio" name="players" value="3"><span>3</span></label>
+            <label class="chip"><input type="radio" name="players" value="4"><span>4</span></label>
+          </div>
+          <p id="players-note" class="hint"></p>
+        </fieldset>
+
+        <fieldset aria-describedby="cart-error">
+          <legend>Cart</legend>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" name="cart" value="yes"><span>Yes, add a cart</span></label>
+            <label class="chip"><input type="radio" name="cart" value="no"><span>No, walking</span></label>
+          </div>
+          <p id="cart-error" class="field-error" aria-live="polite"></p>
+        </fieldset>
+
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-error">
+          <p id="name-error" class="field-error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="email">Email <small>(your confirmation goes here)</small></label>
+          <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-error">
+          <p id="email-error" class="field-error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="phone">Phone <small>(optional; for weather or schedule calls)</small></label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" aria-describedby="phone-error">
+          <p id="phone-error" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <section class="policy" aria-labelledby="policy-heading">
+          <h2 id="policy-heading"></h2>
+          <table>
+            <thead><tr><th scope="col">If you cancel</th><th scope="col">You get</th></tr></thead>
+            <tbody id="policy-rows"></tbody>
+          </table>
+          <button type="button" id="other-policy-toggle" class="disclosure" aria-expanded="false" aria-controls="other-policy"></button>
+          <div id="other-policy" hidden></div>
+        </section>
+
+        <p class="total">Total <strong id="total" aria-live="polite"></strong></p>
+        <p class="hint">This is a practice checkout, not a real booking. No card is asked for and nothing is charged.</p>
+
+        <div id="pay-alert" class="notice notice-error" role="alert" hidden></div>
+        <p id="pay-status" class="visually-hidden" aria-live="polite"></p>
+
+        <div class="actions">
+          <button type="button" id="back-button" class="btn btn-secondary">Back to tee times</button>
+          <button type="submit" id="pay-button" class="btn btn-primary"><span class="spinner" aria-hidden="true"></span><span id="pay-label"></span></button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Step 3 -->
+    <section id="step-done" aria-labelledby="done-heading" hidden>
+      <h1 id="done-heading" tabindex="-1">You're booked</h1>
+      <p id="done-lede" class="lede"></p>
+      <dl id="done-details" class="details"></dl>
+      <section class="policy" aria-labelledby="done-policy-heading">
+        <h2 id="done-policy-heading">If plans change</h2>
+        <table>
+          <thead><tr><th scope="col">If you cancel</th><th scope="col">You get</th></tr></thead>
+          <tbody id="done-policy-rows"></tbody>
+        </table>
+      </section>
+      <div class="actions">
+        <button type="button" id="again-button" class="btn btn-primary">Book another tee time</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <details class="proto-controls">
+      <summary>Prototype controls</summary>
+      <p class="hint">These change how the fake booking server behaves so every state can be tested. They aren't part of the design.</p>
+      <fieldset>
+        <legend>Server speed</legend>
+        <div class="chip-row">
+          <label class="chip"><input type="radio" name="latency" value="fast"><span>Fast (50 ms)</span></label>
+          <label class="chip"><input type="radio" name="latency" value="normal" checked><span>Normal (800 ms)</span></label>
+          <label class="chip"><input type="radio" name="latency" value="slow"><span>Slow (3 s)</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Next payment</legend>
+        <div class="chip-row">
+          <label class="chip"><input type="radio" name="outcome" value="ok" checked><span>Goes through</span></label>
+          <label class="chip"><input type="radio" name="outcome" value="taken"><span>Time gets taken</span></label>
+          <label class="chip"><input type="radio" name="outcome" value="network"><span>Connection drops</span></label>
+        </div>
+      </fieldset>
+    </details>
+    <p>CS 3650 Case Study 02 by Luke Peterson. Not affiliated with Davis County or ForeUp.</p>
+    <p><a href="states.html">See every component state</a></p>
+  </footer>
+</body>
+</html>

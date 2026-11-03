@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Every interactive component in the Davis County Golf booking prototype, shown in each state.">
+  <title>Component States - Davis County Golf (Prototype)</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .matrix { width: 100%; border-collapse: collapse; margin: 8px 0 40px; }
+    .matrix th, .matrix td { padding: 12px; border: 1px solid var(--disabled-border); vertical-align: top; text-align: left; }
+    .matrix thead th { background: var(--surface); font-size: 0.875rem; }
+    .matrix tbody th { font-weight: 400; font-size: 0.875rem; color: var(--muted); width: 22%; }
+    .matrix tbody th code { display: block; margin-top: 4px; font-size: 0.8125rem; color: var(--text); }
+    .scroll { overflow-x: auto; }
+    .sample { max-width: 440px; }
+    main { padding-top: 24px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <p class="site-title"><a href="./">Davis County Golf</a></p>
+    <p class="proto-badge">Component states</p>
+  </header>
+
+  <main id="main">
+    <h1>Component states</h1>
+    <p class="lede">Every interactive component in the booking flow, frozen in each state. These samples don't do anything, so they can't be focused or clicked. <a href="./">Back to the prototype</a></p>
+    <p class="hint">The hover, focus, and pressed examples use special classes: <code>.is-hover</code>, <code>.is-focus</code>, and <code>.is-active</code>. Those follow the same CSS as the real <code>:hover</code>, <code>:focus-visible</code>, and <code>:active</code> states.</p>
+
+    <h2 id="buttons">Buttons</h2>
+    <div class="scroll" inert>
+      <table class="matrix" aria-labelledby="buttons">
+        <thead><tr><th scope="col">State</th><th scope="col">Primary (Pay)</th><th scope="col">Secondary (Back)</th><th scope="col">Disclosure</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Default</th>
+            <td><button class="btn btn-primary"><span class="spinner"></span>Pay $56.00 for Fri, Nov 6 at 10:20 AM</button></td>
+            <td><button class="btn btn-secondary">Back to tee times</button></td>
+            <td><button class="disclosure" aria-expanded="false">Compare with Valley View's policy</button></td></tr>
+          <tr><th scope="row">Hover</th>
+            <td><button class="btn btn-primary is-hover">Pay $56.00 for Fri, Nov 6 at 10:20 AM</button></td>
+            <td><button class="btn btn-secondary is-hover">Back to tee times</button></td>
+            <td><button class="disclosure is-hover" aria-expanded="false">Compare with Valley View's policy</button></td></tr>
+          <tr><th scope="row">Focus</th>
+            <td><button class="btn btn-primary is-focus">Pay $56.00 for Fri, Nov 6 at 10:20 AM</button></td>
+            <td><button class="btn btn-secondary is-focus">Back to tee times</button></td>
+            <td><button class="disclosure is-focus" aria-expanded="false">Compare with Valley View's policy</button></td></tr>
+          <tr><th scope="row">Active (pressed)</th>
+            <td><button class="btn btn-primary is-active">Pay $56.00 for Fri, Nov 6 at 10:20 AM</button></td>
+            <td><button class="btn btn-secondary is-active">Back to tee times</button></td>
+            <td><button class="disclosure" aria-expanded="true">Compare with Valley View's policy</button><span class="hint"> Expanded</span></td></tr>
+          <tr><th scope="row">Disabled<code>disabled</code></th>
+            <td><button class="btn btn-primary" disabled>Already booked</button><p class="hint">Shown with "You already booked this tee time. Confirmation VV-62704."</p></td>
+            <td><button class="btn btn-secondary" disabled>Back to tee times</button><p class="hint">Only while a payment is out.</p></td>
+            <td>Never disabled</td></tr>
+          <tr><th scope="row">Loading<code>aria-disabled="true"</code></th>
+            <td><button class="btn btn-primary is-loading" aria-disabled="true"><span class="spinner" aria-hidden="true"></span>Processing payment...</button></td>
+            <td>Not applicable</td><td>Not applicable</td></tr>
+          <tr><th scope="row">Error</th>
+            <td colspan="3"><div class="notice notice-error sample"><p><strong>We couldn't reach Davis Park's booking system.</strong> You weren't charged, and everything you entered is still here. Try again in a moment.</p></div>
+              <button class="btn btn-primary">Try paying $56.00 again</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="chips">Choice chips (radio buttons)</h2>
+    <div class="scroll" inert>
+      <table class="matrix" aria-labelledby="chips">
+        <thead><tr><th scope="col">State</th><th scope="col">Filter chip</th><th scope="col">Date chip</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Default</th>
+            <td><label class="chip"><input type="radio"><span>9 holes</span></label></td>
+            <td><label class="chip date-chip"><input type="radio"><span><b>Sat</b> Nov 7</span></label></td></tr>
+          <tr><th scope="row">Hover</th>
+            <td><label class="chip is-hover"><input type="radio"><span>9 holes</span></label></td>
+            <td><label class="chip date-chip is-hover"><input type="radio"><span><b>Sat</b> Nov 7</span></label></td></tr>
+          <tr><th scope="row">Focus</th>
+            <td><label class="chip is-focus"><input type="radio"><span>9 holes</span></label></td>
+            <td><label class="chip date-chip is-focus"><input type="radio"><span><b>Sat</b> Nov 7</span></label></td></tr>
+          <tr><th scope="row">Active (pressed)</th>
+            <td><label class="chip is-active"><input type="radio"><span>9 holes</span></label></td>
+            <td><label class="chip date-chip is-active"><input type="radio"><span><b>Sat</b> Nov 7</span></label></td></tr>
+          <tr><th scope="row">Selected<code>checked</code></th>
+            <td><label class="chip"><input type="radio" checked><span>9 holes</span></label></td>
+            <td><label class="chip date-chip"><input type="radio" checked><span><b>Sat</b> Nov 7</span></label></td></tr>
+          <tr><th scope="row">Disabled<code>disabled</code></th>
+            <td><label class="chip"><input type="radio" disabled><span>4</span></label><p class="hint">"Only 3 of 4 spots are open at this time."</p></td>
+            <td><label class="chip date-chip"><input type="radio" disabled><span><b>Mon</b> Nov 9<small>Opens Thu 9 PM</small></span></label></td></tr>
+          <tr><th scope="row">Error<code>aria-invalid="true"</code></th>
+            <td><div class="chip-row"><label class="chip"><input type="radio" aria-invalid="true"><span>Yes, add a cart</span></label><label class="chip"><input type="radio" aria-invalid="true"><span>No, walking</span></label></div>
+              <p class="field-error">Pick a cart or walking. The course needs to know before you check in.</p></td>
+            <td>Not applicable. Closed days can't be picked.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="checks">Course checkboxes</h2>
+    <div class="scroll" inert>
+      <table class="matrix" aria-labelledby="checks">
+        <thead><tr><th scope="col">State</th><th scope="col">Checkbox</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Default</th><td><label class="check"><input type="checkbox"><span>Davis Park <small>Fruit Heights</small></span></label></td></tr>
+          <tr><th scope="row">Hover</th><td><label class="check is-hover"><input type="checkbox"><span>Davis Park <small>Fruit Heights</small></span></label></td></tr>
+          <tr><th scope="row">Focus</th><td><label class="check is-focus"><input type="checkbox"><span>Davis Park <small>Fruit Heights</small></span></label></td></tr>
+          <tr><th scope="row">Active (pressed)</th><td><label class="check is-active"><input type="checkbox"><span>Davis Park <small>Fruit Heights</small></span></label></td></tr>
+          <tr><th scope="row">Checked</th><td><label class="check"><input type="checkbox" checked><span>Davis Park <small>Fruit Heights</small></span></label></td></tr>
+          <tr><th scope="row">Disabled</th><td>Never disabled</td></tr>
+          <tr><th scope="row">Error<code>aria-invalid="true"</code></th>
+            <td><div class="chip-row"><label class="check"><input type="checkbox" aria-invalid="true"><span>Davis Park <small>Fruit Heights</small></span></label><label class="check"><input type="checkbox" aria-invalid="true"><span>Valley View <small>Layton</small></span></label></div>
+              <p class="field-error">Pick at least one course to see tee times.</p></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="fields">Text fields</h2>
+    <div class="scroll" inert>
+      <table class="matrix" aria-labelledby="fields">
+        <thead><tr><th scope="col">State</th><th scope="col">Email field</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Default</th><td><div class="field"><label>Email</label><input type="email"></div></td></tr>
+          <tr><th scope="row">Hover</th><td><div class="field"><label>Email</label><input type="email" class="is-hover"></div></td></tr>
+          <tr><th scope="row">Focus</th><td><div class="field"><label>Email</label><input type="email" class="is-focus" value="luke@"></div></td></tr>
+          <tr><th scope="row">Active</th><td>Same as focus while typing</td></tr>
+          <tr><th scope="row">Disabled</th><td><div class="field"><label>Email</label><input type="email" disabled value="luke@example.com"></div><p class="hint">Not used in the flow. Fields stay editable during payment so nothing is lost if it fails.</p></td></tr>
+          <tr><th scope="row">Error<code>aria-invalid="true"</code></th><td><div class="field"><label>Email</label><input type="email" aria-invalid="true" value="luke@example"><p class="field-error">That does not look like an email address. Use the format name@example.com.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="cards">Tee time cards</h2>
+    <div class="scroll" inert>
+      <table class="matrix" aria-labelledby="cards">
+        <thead><tr><th scope="col">State</th><th scope="col">Tee time button</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Default</th><td><div class="sample">
+            <button class="tee-card"><span class="tee-time">2:10 PM</span><span class="tee-course">Valley View</span><span class="tee-meta"><span>Back #10</span><span class="holes-badge holes-9">9 holes</span><span>3 of 4 spots open</span></span><span class="tee-price">$18.00<small> per player</small></span></button></div></td></tr>
+          <tr><th scope="row">Hover</th><td><div class="sample">
+            <button class="tee-card is-hover"><span class="tee-time">2:10 PM</span><span class="tee-course">Valley View</span><span class="tee-meta"><span>Back #10</span><span class="holes-badge holes-9">9 holes</span><span>3 of 4 spots open</span></span><span class="tee-price">$18.00<small> per player</small></span></button></div></td></tr>
+          <tr><th scope="row">Focus</th><td><div class="sample">
+            <button class="tee-card is-focus"><span class="tee-time">2:10 PM</span><span class="tee-course">Valley View</span><span class="tee-meta"><span>Back #10</span><span class="holes-badge holes-9">9 holes</span><span>3 of 4 spots open</span></span><span class="tee-price">$18.00<small> per player</small></span></button></div></td></tr>
+          <tr><th scope="row">Active (pressed)</th><td><div class="sample">
+            <button class="tee-card is-active"><span class="tee-time">2:10 PM</span><span class="tee-course">Valley View</span><span class="tee-meta"><span>Back #10</span><span class="holes-badge holes-9">9 holes</span><span>3 of 4 spots open</span></span><span class="tee-price">$18.00<small> per player</small></span></button></div></td></tr>
+          <tr><th scope="row">Disabled</th><td>Never disabled. A taken or closed time is left out of the list, and the empty state explains why.</td></tr>
+          <tr><th scope="row">Loading<code>aria-busy="true"</code></th><td><div class="sample"><ul class="tee-list"><li class="tee-skeleton"></li><li class="tee-skeleton"></li></ul></div></td></tr>
+          <tr><th scope="row">Error (empty)</th><td><div class="empty-state sample"><h3>No tee times match those filters</h3><p>There are 9 open times at Valley View on Wed, Nov 4, just not with every filter you picked. These are the ones that do:</p><div class="chip-row"><button class="btn btn-secondary">Show 3 times for Thu, Nov 5</button></div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="badges">Hole badges</h2>
+    <p><span class="holes-badge holes-9">9 holes</span> <span class="holes-badge holes-18">18 holes</span> <span class="holes-badge holes-both">9 or 18 holes</span></p>
+  </main>
+</body>
+</html>
